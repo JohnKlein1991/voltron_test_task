@@ -1,5 +1,6 @@
 <?php
 return [
+    'name' => 'Voltron: учет доходов/расходов',
     'aliases' => [
         '@bower' => '@vendor/bower-asset',
         '@npm'   => '@vendor/npm-asset',
