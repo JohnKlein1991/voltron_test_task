@@ -15,9 +15,11 @@ class m200209_153215_create_money_transactions_table extends Migration
         $this->createTable('{{%money_transactions}}', [
             'id' => $this->primaryKey(),
             'amount' => $this->integer()->notNull(),
-            'category_id' => $this->integer(11),
+            'category_id' => $this->integer(11)->notNull(),
+            'company_id' => $this->integer(11)->notNull(),
             'user_id' => $this->integer(11)->notNull(),
             'type' => $this->smallInteger()->notNull(),
+            'date' => $this->date()->notNull(),
             'created_at' => $this->integer()->notNull(),
             'updated_at' => $this->integer()->notNull(),
         ]);
@@ -36,6 +38,15 @@ class m200209_153215_create_money_transactions_table extends Migration
             'money_transactions',
             'category_id',
             'money_transactions_categories',
+            'id',
+            'CASCADE'
+        );
+
+        $this->addForeignKey(
+            'fk-money_transactions-company_id',
+            'money_transactions',
+            'company_id',
+            'companies',
             'id',
             'CASCADE'
         );

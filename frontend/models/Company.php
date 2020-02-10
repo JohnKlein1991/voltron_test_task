@@ -62,4 +62,13 @@ class Company extends ActiveRecord
     {
         return $this->hasOne(User::class, ['id' => 'owner_id']);
     }
+
+    public static function getCompaniesByUserId($userId)
+    {
+        return self::find()
+            ->select(['id', 'title'])
+            ->where("owner_id = $userId")
+            ->asArray()
+            ->all();
+    }
 }

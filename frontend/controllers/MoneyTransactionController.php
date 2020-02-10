@@ -2,6 +2,7 @@
 
 namespace frontend\controllers;
 
+use frontend\models\Company;
 use frontend\models\MoneyTransactionsCategory;
 use Yii;
 use frontend\models\MoneyTransaction;
@@ -12,6 +13,8 @@ use yii\web\Controller;
 use yii\web\NotFoundHttpException;
 use yii\filters\VerbFilter;
 use yii\helpers\ArrayHelper;
+use yii\web\Response;
+use yii\widgets\ActiveForm;
 
 /**
  * MoneyTransactionController implements the CRUD actions for MoneyTransaction model.
@@ -32,6 +35,10 @@ class MoneyTransactionController extends Controller
                         'allow' => true,
                         'roles' => ['@'],
                     ],
+                    [
+                        'actions' => ['validate'],
+                        'allow' => true,
+                    ],
                 ],
             ],
             'verbs' => [
@@ -43,18 +50,39 @@ class MoneyTransactionController extends Controller
         ];
     }
 
+    public function actionGetList()
+    {
+
+    }
+
     /**
      * Lists all MoneyTransaction models.
      * @return mixed
      */
     public function actionIndex()
     {
+        $model = new MoneyTransaction();
+        $dataForSelectTypes = $this->getDataForSelectTypes();
+        $dataForSelectCategories = $this->getDataForSelectCategories();
+        $dataForSelectCompanies = $this->getDataForSelectCompanies();
+
         $dataProvider = new ActiveDataProvider([
-            'query' => MoneyTransaction::find()->with('category'),
+            'query' => MoneyTransaction::find()
+                ->with('category')
+                ->orderBy([
+                    'date' => SORT_DESC
+                ]),
+            'pagination' => [
+                'pageSize' => 10,
+            ],
         ]);
 
         return $this->render('index', [
+            'model' => $model,
             'dataProvider' => $dataProvider,
+            'dataForSelectTypes' => $dataForSelectTypes,
+            'dataForSelectCategories' => $dataForSelectCategories,
+            'dataForSelectCompanies' => $dataForSelectCompanies
         ]);
     }
 
@@ -86,8 +114,14 @@ class MoneyTransactionController extends Controller
             $data['MoneyTransaction']['created_at'] = time();
             $data['MoneyTransaction']['updated_at'] = time();
 
+            Yii::$app->response->format = Response::FORMAT_JSON;
             if ($model->load($data) && $model->save()) {
-                return $this->redirect(['view', 'id' => $model->id]);
+                return [
+                    'success' => true,
+                    'id' => $model->id
+                ];
+            } else {
+                return $model->errors;
             }
         }
 
@@ -145,6 +179,22 @@ class MoneyTransactionController extends Controller
         return $this->redirect(['index']);
     }
 
+    public function actionValidate()
+    {
+        $model = new MoneyTransaction();
+        $request = \Yii::$app->getRequest();
+        if ($request->isPost && $model->load($request->post())) {
+            \Yii::$app->response->format = Response::FORMAT_JSON;
+            return ActiveForm::validate($model, [
+                'amount',
+                'category_id',
+                'company_id',
+                'type',
+                'date'
+            ]);
+        }
+    }
+
     /**
      * Finds the MoneyTransaction model based on its primary key value.
      * If the model is not found, a 404 HTTP exception will be thrown.
@@ -172,6 +222,12 @@ class MoneyTransactionController extends Controller
     private function getDataForSelectCategories()
     {
         $data = MoneyTransactionsCategory::getCategoriesByUserId(Yii::$app->user->id);
+        return ArrayHelper::map($data, 'id', 'title');
+    }
+
+    private function getDataForSelectCompanies()
+    {
+        $data = Company::getCompaniesByUserId(Yii::$app->user->id);
         return ArrayHelper::map($data, 'id', 'title');
     }
 }
