@@ -1,8 +1,7 @@
 <?php
 
-use yii\helpers\Html;
 use yii\grid\GridView;
-use frontend\models\MoneyTransaction;
+use yii\helpers\Html;
 use yii\widgets\ActiveForm;
 
 /* @var $this yii\web\View */
@@ -43,10 +42,6 @@ $this->params['breadcrumbs'][] = $this->title;
 
     <h1><?= Html::encode($this->title) ?></h1>
 
-    <p>
-        <?= Html::a('Добавить транзакцию', ['create'], ['class' => 'btn btn-success']) ?>
-    </p>
-
     <?php \yii\widgets\Pjax::begin(); ?>
     <?= GridView::widget([
         'dataProvider' => $dataProvider,
@@ -69,8 +64,6 @@ $this->params['breadcrumbs'][] = $this->title;
                 'attribute' => 'amount',
                 'label' => 'Сумма'
             ],
-
-            ['class' => 'yii\grid\ActionColumn'],
         ],
     ]); ?>
     <?php \yii\widgets\Pjax::end(); ?>

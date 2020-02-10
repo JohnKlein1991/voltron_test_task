@@ -42,8 +42,7 @@ AppAsset::register($this);
         $menuItems[] = ['label' => 'Зарегистрироваться', 'url' => ['/site/signup']];
         $menuItems[] = ['label' => 'Войти', 'url' => ['/site/login']];
     } else {
-        $menuItems[] = ['label' => 'Компании', 'url' => ['/company']];
-        $menuItems[] = ['label' => 'Категории транзакций', 'url' => ['/money-transactions-category']];
+        $menuItems[] = ['label' => 'Компании и категории', 'url' => ['/category-and-company']];
         $menuItems[] = ['label' => 'Доходы/расходы', 'url' => ['/money-transaction']];
         $menuItems[] = '<li>'
             . Html::beginForm(['/site/logout'], 'post')

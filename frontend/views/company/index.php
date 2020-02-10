@@ -9,6 +9,7 @@ use yii\grid\GridView;
 $this->title = 'Компании';
 $this->params['breadcrumbs'][] = $this->title;
 ?>
+
 <div class="company-index">
 
     <h1><?= Html::encode($this->title) ?></h1>
