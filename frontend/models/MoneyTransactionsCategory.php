@@ -74,4 +74,13 @@ class MoneyTransactionsCategory extends \yii\db\ActiveRecord
     {
         return $this->hasOne(User::class, ['id' => 'user_id']);
     }
+
+    public static function getCategoriesByUserId($userId)
+    {
+        return self::find()
+            ->select(['id', 'title'])
+            ->where("user_id = $userId")
+            ->asArray()
+            ->all();
+    }
 }

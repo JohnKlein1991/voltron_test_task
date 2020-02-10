@@ -24,8 +24,16 @@ $this->params['breadcrumbs'][] = $this->title;
             ['class' => 'yii\grid\SerialColumn'],
 
             'title',
-            ['attribute' => 'created_at', 'format' => ['date', 'php:Y-m-d H:i:s']],
-            ['attribute' => 'updated_at', 'format' => ['date', 'php:Y-m-d H:i:s']],
+            [
+                'attribute' => 'created_at',
+                'label' => 'Дата создания',
+                'format' => ['date', 'php:Y-m-d H:i:s']
+            ],
+            [
+                'attribute' => 'updated_at',
+                'label' => 'Дата изменения',
+                'format' => ['date', 'php:Y-m-d H:i:s']
+            ],
 
             ['class' => 'yii\grid\ActionColumn'],
         ],
