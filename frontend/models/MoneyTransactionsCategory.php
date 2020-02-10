@@ -11,27 +11,15 @@ use common\models\User;
  * @property int $id
  * @property string|null $title
  * @property int $user_id
- * @property int $type
  * @property int $created_at
  * @property int $updated_at
  *
- * @property MoneyTransactions[] $moneyTransactions
+ * @property MoneyTransaction[] $moneyTransactions
  * @property User $user
  */
 class MoneyTransactionsCategory extends \yii\db\ActiveRecord
 {
 
-
-    /**
-     * Тип - доход
-     * @var int
-     */
-    public static $TYPE_REVENUE = 1;
-    /**
-     * Тип - расход
-     * @var int
-     */
-    public static $TYPE_EXPENSE = 2;
     /**
      * {@inheritdoc}
      */
@@ -46,8 +34,8 @@ class MoneyTransactionsCategory extends \yii\db\ActiveRecord
     public function rules()
     {
         return [
-            [['user_id', 'type', 'created_at', 'updated_at'], 'required'],
-            [['user_id', 'type', 'created_at', 'updated_at'], 'integer'],
+            [['user_id', 'created_at', 'updated_at'], 'required'],
+            [['user_id', 'created_at', 'updated_at'], 'integer'],
             [['title'], 'string', 'max' => 250],
             [['user_id'], 'exist', 'skipOnError' => true, 'targetClass' => User::class, 'targetAttribute' => ['user_id' => 'id']],
         ];
@@ -62,7 +50,6 @@ class MoneyTransactionsCategory extends \yii\db\ActiveRecord
             'id' => 'ID',
             'title' => 'Название',
             'user_id' => 'ID создателя',
-            'type' => 'Тип',
             'created_at' => 'Дата создания',
             'updated_at' => 'Дата обновления',
         ];
@@ -75,7 +62,7 @@ class MoneyTransactionsCategory extends \yii\db\ActiveRecord
      */
     public function getMoneyTransactions()
     {
-        return $this->hasMany(MoneyTransactions::class, ['category_id' => 'id']);
+        return $this->hasMany(MoneyTransaction::class, ['category_id' => 'id']);
     }
 
     /**

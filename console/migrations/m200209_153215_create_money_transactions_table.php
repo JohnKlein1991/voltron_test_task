@@ -14,8 +14,10 @@ class m200209_153215_create_money_transactions_table extends Migration
     {
         $this->createTable('{{%money_transactions}}', [
             'id' => $this->primaryKey(),
+            'amount' => $this->integer()->notNull(),
             'category_id' => $this->integer(11),
             'user_id' => $this->integer(11)->notNull(),
+            'type' => $this->smallInteger()->notNull(),
             'created_at' => $this->integer()->notNull(),
             'updated_at' => $this->integer()->notNull(),
         ]);

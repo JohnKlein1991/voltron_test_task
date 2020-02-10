@@ -31,19 +31,6 @@ $this->params['breadcrumbs'][] = $this->title;
         'model' => $model,
         'attributes' => [
             'title',
-            [
-                    'attribute' => 'type',
-                    'type' => 'raw',
-                    'value' => function() use ($model) {
-                        if ($model->type === MoneyTransactionsCategory::$TYPE_REVENUE) {
-                            return 'Доход';
-                        } else if ($model->type === MoneyTransactionsCategory::$TYPE_EXPENSE) {
-                            return 'Расход';
-                        } else {
-                            return false;
-                        }
-                    }
-            ],
             ['attribute' => 'created_at', 'format' => ['date', 'php:Y-m-d H:i:s']],
             ['attribute' => 'updated_at', 'format' => ['date', 'php:Y-m-d H:i:s']],
         ],

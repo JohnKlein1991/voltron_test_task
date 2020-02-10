@@ -23,10 +23,7 @@ $this->params['breadcrumbs'][] = $this->title;
         'columns' => [
             ['class' => 'yii\grid\SerialColumn'],
 
-            'id',
             'title',
-            'user_id',
-            'type',
             ['attribute' => 'created_at', 'format' => ['date', 'php:Y-m-d H:i:s']],
             ['attribute' => 'updated_at', 'format' => ['date', 'php:Y-m-d H:i:s']],
 

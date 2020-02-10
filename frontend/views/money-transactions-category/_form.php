@@ -15,11 +15,6 @@ use frontend\models\MoneyTransactionsCategory;
 
     <?= $form->field($model, 'title')->textInput(['maxlength' => true]) ?>
 
-    <?= $form->field($model, 'type')->radioList([
-        MoneyTransactionsCategory::$TYPE_REVENUE => 'Доход',
-        MoneyTransactionsCategory::$TYPE_EXPENSE => 'Расход',
-    ]) ?>
-
     <div class="form-group">
         <?= Html::submitButton('Save', ['class' => 'btn btn-success']) ?>
     </div>

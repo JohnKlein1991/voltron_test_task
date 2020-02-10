@@ -43,6 +43,8 @@ AppAsset::register($this);
         $menuItems[] = ['label' => 'Войти', 'url' => ['/site/login']];
     } else {
         $menuItems[] = ['label' => 'Компании', 'url' => ['/company']];
+        $menuItems[] = ['label' => 'Категории транзакций', 'url' => ['/money-transactions-category']];
+        $menuItems[] = ['label' => 'Доходы/расходы', 'url' => ['/money-transaction']];
         $menuItems[] = '<li>'
             . Html::beginForm(['/site/logout'], 'post')
             . Html::submitButton(

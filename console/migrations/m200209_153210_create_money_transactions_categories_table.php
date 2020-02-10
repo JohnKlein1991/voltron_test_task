@@ -16,7 +16,6 @@ class m200209_153210_create_money_transactions_categories_table extends Migratio
             'id' => $this->primaryKey(),
             'title' => $this->string(250),
             'user_id' => $this->integer(11)->notNull(),
-            'type' => $this->smallInteger()->notNull(),
             'created_at' => $this->integer()->notNull(),
             'updated_at' => $this->integer()->notNull(),
         ]);
