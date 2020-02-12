@@ -33,8 +33,11 @@ class CategoryAndCompanyController extends Controller
                             'index',
                             'create-company',
                             'update-company',
+                            'delete-company',
+                            'create-category',
+                            'update-category',
+                            'delete-category',
                             'validate',
-                            'delete-company'
                         ],
                         'allow' => true,
                         'roles' => ['@']
@@ -79,31 +82,6 @@ class CategoryAndCompanyController extends Controller
     }
 
     /**
-     * Creates a new Company model.
-     * If creation is successful, the browser will be redirected to the 'view' page.
-     * @return mixed
-     */
-    public function actionCreate()
-    {
-        $model = new Company();
-
-        if (Yii::$app->request->post()) {
-            $data = Yii::$app->request->post();
-            $data['Company']['owner_id'] = Yii::$app->user->id;
-            $data['Company']['created_at'] = time();
-            $data['Company']['updated_at'] = time();
-
-            if ($model->load($data) && $model->save()) {
-                return $this->redirect(['view', 'id' => $model->id]);
-            }
-        }
-
-        return $this->render('create', [
-            'model' => $model,
-        ]);
-    }
-
-    /**
      * Updates an existing Company model.
      * If update is successful, the browser will be redirected to the 'view' page.
      * @param integer $id
@@ -128,7 +106,33 @@ class CategoryAndCompanyController extends Controller
             }
         } else if (Yii::$app->request->isAjax) {
             return $this->renderAjax('_form', [
-                'model' => $model
+                'model' => $model,
+                'pjaxName' => 'company'
+            ]);
+        }
+    }
+
+
+    public function actionUpdateCategory($id)
+    {
+        $model = MoneyTransactionsCategory::findOne($id);
+
+        if (isset(Yii::$app->request->post('MoneyTransactionsCategory')['title'])) {
+            $model->title = Yii::$app->request->post('MoneyTransactionsCategory')['title'];
+            $model->updated_at = time();
+            Yii::$app->response->format = Response::FORMAT_JSON;
+            if ($model->save()) {
+                return [
+                    'success' => true,
+                    'id' => $model->id
+                ];
+            } else {
+                return $model->errors;
+            }
+        } else if (Yii::$app->request->isAjax) {
+            return $this->renderAjax('_form', [
+                'model' => $model,
+                'pjaxName' => 'category'
             ]);
         }
     }
@@ -136,6 +140,21 @@ class CategoryAndCompanyController extends Controller
     public function actionDeleteCompany($id)
     {
         $model = Company::findOne($id);
+
+        Yii::$app->response->format = Response::FORMAT_JSON;
+        if ($model->delete()) {
+            return [
+                'success' => true,
+                'id' => $model->id
+            ];
+        } else {
+            return $model->errors;
+        }
+    }
+
+    public function actionDeleteCategory($id)
+    {
+        $model = MoneyTransactionsCategory::findOne($id);
 
         Yii::$app->response->format = Response::FORMAT_JSON;
         if ($model->delete()) {
@@ -169,7 +188,37 @@ class CategoryAndCompanyController extends Controller
             }
         } else if (Yii::$app->request->isAjax) {
             return $this->renderAjax('_form', [
-                'model' => $model
+                'model' => $model,
+                'pjaxName' => 'company'
+            ]);
+        }
+    }
+
+    public function actionCreateCategory()
+    {
+        $model = new MoneyTransactionsCategory();
+
+        if (isset(Yii::$app->request->post('MoneyTransactionsCategory')['title'])) {
+            $title = Yii::$app->request->post('MoneyTransactionsCategory')['title'];
+
+            $model->title = $title;
+            $model->user_id = Yii::$app->user->id;
+            $model->created_at = time();
+            $model->updated_at = time();
+
+            Yii::$app->response->format = Response::FORMAT_JSON;
+            if ($model->save()) {
+                return [
+                    'success' => true,
+                    'id' => $model->id
+                ];
+            } else {
+                return $model->errors;
+            }
+        } else if (Yii::$app->request->isAjax) {
+            return $this->renderAjax('_form', [
+                'model' => $model,
+                'pjaxName' => 'category',
             ]);
         }
     }

@@ -6,6 +6,7 @@ use yii\widgets\ActiveForm;
 /* @var $this yii\web\View */
 /* @var $model frontend\models\Company */
 /* @var $form yii\widgets\ActiveForm */
+/* @var $pjaxName string */
 ?>
 
 <div class="company-form">
@@ -13,7 +14,10 @@ use yii\widgets\ActiveForm;
     <?php $form = ActiveForm::begin([
         'id' => 'category-and-company_modal_form',
         'enableAjaxValidation' => true,
-        'validationUrl' => 'validate',
+        'validationUrl' => '/category-and-company/validate',
+        'options' => [
+            'pjax-name' => $pjaxName
+        ]
     ]); ?>
     <?= $form->field($model, 'title')->label('Название')->textInput() ?>
 

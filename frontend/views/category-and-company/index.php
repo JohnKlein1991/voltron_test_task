@@ -27,7 +27,7 @@ $this->params['breadcrumbs'][] = $this->title;
 
     <?= Html::button('Создать новую компанию', ['value' => Url::to(['category-and-company/create-company']), 'title' => 'Создание новой компании', 'class' => 'showModalButton btn btn-success']); ?>
 
-    <?php \yii\widgets\Pjax::begin(); ?>
+    <?php \yii\widgets\Pjax::begin(['id' => 'pjax_company-list']); ?>
     <?= GridView::widget([
         'dataProvider' => $companiesDataProvider,
         'columns' => [
@@ -61,7 +61,6 @@ $this->params['breadcrumbs'][] = $this->title;
                     },
                     'delete' => function ($url, $model, $key) {
                         $btn = Html::button("<span class='glyphicon glyphicon-trash'></span>",[
-                            'value'=> Url::to(["category-and-company/update-company/?id={$key}"]),
                             'title'=> 'Удалить компанию',
                             'aria-label' => 'Удалить компанию',
                             'onclick' => "
@@ -69,7 +68,7 @@ $this->params['breadcrumbs'][] = $this->title;
                                     $.ajax('/category-and-company/delete-company/?id={$key}', {
                                         type: 'POST'
                                     }).done(function(data) {
-                                        $.pjax.reload({container: '#p0'});
+                                        $.pjax.reload({container: '#pjax_company-list'});
                                     });
                                 }
                                 return false;
@@ -97,7 +96,9 @@ $this->params['breadcrumbs'][] = $this->title;
 
     <h2>Категории</h2>
 
-    <?php \yii\widgets\Pjax::begin(); ?>
+    <?= Html::button('Создать новую категорию', ['value' => Url::to(['category-and-company/create-category']), 'title' => 'Создание новой категории', 'class' => 'showModalButton btn btn-success']); ?>
+
+    <?php \yii\widgets\Pjax::begin(['id' => 'pjax_category-list']); ?>
     <?= GridView::widget([
         'dataProvider' => $categoriesDataProvider,
         'columns' => [
@@ -109,6 +110,36 @@ $this->params['breadcrumbs'][] = $this->title;
 
             [
                 'class' => 'yii\grid\ActionColumn',
+                'template'=>'{update} {delete}',
+                'buttons' => [
+                    'update' => function($url,$model,$key){
+                        $btn = Html::button("<span class='glyphicon glyphicon-pencil'></span>",[
+                            'value'=> Url::to(["category-and-company/update-category/?id={$key}"]),
+                            'class'=>'update-modal-click showModalButton grid-action',
+                            'data-toggle'=>'tooltip',
+                            'data-placement'=>'bottom',
+                            'title'=>'Редактировать категорию'
+                        ]);
+                        return $btn;
+                    },
+                    'delete' => function ($url, $model, $key) {
+                        $btn = Html::button("<span class='glyphicon glyphicon-trash'></span>",[
+                            'title'=> 'Удалить категорию',
+                            'aria-label' => 'Удалить категорию',
+                            'onclick' => "
+                                if (confirm('Действительно хотите удалить категорию?')) {
+                                    $.ajax('/category-and-company/delete-category/?id={$key}', {
+                                        type: 'POST'
+                                    }).done(function(data) {
+                                        $.pjax.reload({container: '#pjax_category-list'});
+                                    });
+                                }
+                                return false;
+                            ",
+                        ]);
+                        return $btn;
+                    },
+                ]
             ],
         ],
     ]); ?>

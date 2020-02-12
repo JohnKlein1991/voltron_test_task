@@ -7,6 +7,7 @@ $('#category-and-company_modal').on('shown.bs.modal', function (e) {
         resultElementSpan.text('');
         resultElement.removeClass('alert-success alert-danger');
         resultElement.css('display', 'none');
+        let pjaxContainer = `pjax_${form.attr('pjax-name')}-list`;
         $.ajax({
                 type: form.attr('method'),
                 url: form.attr('action'),
@@ -15,7 +16,7 @@ $('#category-and-company_modal').on('shown.bs.modal', function (e) {
         )
             .done(function(data) {
                 if(data.success) {
-                    $.pjax.reload({container:'#p0'});
+                    $.pjax.reload({container: `#${pjaxContainer}`});
                     console.log(data);
                     resultElementSpan.text("Операция прошла успешно)");
                     resultElement.addClass('alert-success');
@@ -23,7 +24,7 @@ $('#category-and-company_modal').on('shown.bs.modal', function (e) {
                     form.trigger('reset');
                     $('#category-and-company_modal').modal('hide');
                 } else {
-                    $.pjax.reload({container:'#p0'});
+                    $.pjax.reload({container: `#${pjaxContainer}`});
                     resultElementSpan.text('Что-то пошло не так ...');
                     resultElement.addClass('alert-danger');
                     resultElement.css('display', 'block');
@@ -31,7 +32,7 @@ $('#category-and-company_modal').on('shown.bs.modal', function (e) {
                 }
             })
             .fail(function () {
-                $.pjax.reload({container:'#p0'});
+                $.pjax.reload({container: `#${pjaxContainer}`});
                 resultElementSpan.text('Что-то пошло не так ...');
                 resultElement.addClass('alert-danger');
                 resultElement.css('display', 'block');
