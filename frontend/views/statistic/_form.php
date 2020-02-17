@@ -12,11 +12,11 @@ use yii\widgets\ActiveForm;
 /** @var $dataForGroupBySelect array */
 ?>
 
-<div class="money-transaction-form">
+<div class="statistic-form">
 
     <?php $form = ActiveForm::begin([
         'id' => 'create_statistic_form',
-        'action' => '/statistic/create',
+        'action' => '/statistic',
         'enableAjaxValidation' => true,
         'validationUrl' => '/statistic/validate',
     ]); ?>
@@ -46,7 +46,7 @@ use yii\widgets\ActiveForm;
     ) ?>
 
     <div class="form-group">
-        <?= Html::submitButton('Сохранить', ['class' => 'btn btn-success']) ?>
+        <?= Html::submitButton('Сформировать', ['class' => 'btn btn-success']) ?>
     </div>
 
     <?php ActiveForm::end(); ?>

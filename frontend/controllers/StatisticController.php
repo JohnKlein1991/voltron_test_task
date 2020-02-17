@@ -5,7 +5,9 @@ namespace frontend\controllers;
 use frontend\models\Company;
 use frontend\models\MoneyTransactionsCategory;
 use frontend\models\StatisticForm;
+use frontend\services\StatisticService;
 use Yii;
+use yii\data\ArrayDataProvider;
 use yii\helpers\ArrayHelper;
 use yii\web\Response;
 use yii\widgets\ActiveForm;
@@ -17,7 +19,25 @@ use yii\widgets\ActiveForm;
 class StatisticController extends \yii\web\Controller
 {
     /**
-     * @return string
+     * @var StatisticService
+     */
+    private $service;
+
+    /**
+     * StatisticController constructor.
+     * @param $id
+     * @param $module
+     * @param StatisticService $service
+     * @param array $config
+     */
+    public function __construct($id, $module, StatisticService $service, $config = [])
+    {
+        $this->service = $service;
+        parent::__construct($id, $module, $config);
+    }
+
+    /**
+     * @return array|string
      */
     public function actionIndex()
     {
@@ -26,24 +46,32 @@ class StatisticController extends \yii\web\Controller
         $dataForSelectCategories = $this->getDataForSelectCategories();
         $dataForSelectCompanies = $this->getDataForSelectCompanies();
 
-//        $dataProvider = new ActiveDataProvider([
-//            'query' => MoneyTransaction::find()
-//                ->with('category')
-//                ->orderBy([
-//                    'date' => SORT_DESC
-//                ]),
-//            'pagination' => [
-//                'pageSize' => 10,
-//            ],
-//        ]);
+        if (Yii::$app->request->isAjax && isset(Yii::$app->request->post()['StatisticForm'])) {
+            $requestData = Yii::$app->request->post()['StatisticForm'];
+            $data = $this->getDataForStatisticTable($requestData);
 
-        return $this->render('index', [
-            'model' => $model,
-//            'dataProvider' => $dataProvider,
-            'dataForGroupBySelect' => $dataForGroupBySelect,
-            'dataForSelectCategories' => $dataForSelectCategories,
-            'dataForSelectCompanies' => $dataForSelectCompanies
-        ]);
+            Yii::$app->response->format = Response::FORMAT_JSON;
+            return [
+                'success' => true,
+                'data' => $data
+            ];
+        } else {
+            $data = $this->getDataForStatisticTable();
+            $dataProvider = new ArrayDataProvider([
+                'allModels' => [$data],
+                'pagination' => [
+                    'pageSize' => 10,
+                ],
+            ]);
+
+            return $this->render('index', [
+                'model' => $model,
+                'dataProvider' => $dataProvider,
+                'dataForGroupBySelect' => $dataForGroupBySelect,
+                'dataForSelectCategories' => $dataForSelectCategories,
+                'dataForSelectCompanies' => $dataForSelectCompanies
+            ]);
+        }
     }
 
     /**
@@ -63,6 +91,16 @@ class StatisticController extends \yii\web\Controller
                 'company_id',
             ]);
         }
+    }
+
+    /**
+     * @param array $requestData
+     * @return mixed
+     * @throws \yii\db\Exception
+     */
+    private function getDataForStatisticTable($requestData = [])
+    {
+        return $this->service->getDataForStatisticTable($requestData);
     }
 
     /**

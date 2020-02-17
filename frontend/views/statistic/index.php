@@ -3,6 +3,8 @@
 /** @var $dataForGroupBySelect array */
 /** @var $dataForSelectCategories array */
 /** @var $dataForSelectCompanies array */
+/* @var $dataProvider yii\data\ArrayDataProvider */
+
 ?>
 
 <?php
@@ -10,12 +12,25 @@ $this->title = 'Отчеты';
 $this->params['breadcrumbs'][] = $this->title;
 ?>
 
+<div id="alert_result_of_request" class="alert" role="alert" style="display:none;">
+</div>
+
 <?= $this->render('_form', [
     'model' => $model,
     'dataForGroupBySelect' => $dataForGroupBySelect,
     'dataForSelectCompanies' => $dataForSelectCompanies,
     'dataForSelectCategories' => $dataForSelectCategories,
 ]) ?>
+
+<div id="statistic-table" style="display: none">
+    <?=
+    $this->render('statistic_table');
+    ?>
+</div>
+
+<div id="alert_additional_info" class="alert alert-info" role="alert" style="display: none">
+    По данным параметрам транзакции отсутствуют
+</div>
 
 <?php
 $this->registerCssFile(
