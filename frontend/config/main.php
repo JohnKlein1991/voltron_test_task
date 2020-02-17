@@ -11,6 +11,16 @@ return [
     'basePath' => dirname(__DIR__),
     'bootstrap' => ['log'],
     'controllerNamespace' => 'frontend\controllers',
+    'container' => [
+        'definitions' => [
+            'StatisticService' => [
+                'class' => frontend\services\StatisticService::class
+            ],
+            'frontend\services\repositories\StatisticRepository' => [
+                'class' => \frontend\services\repositories\StatisticRepository::class
+            ]
+        ],
+    ],
     'components' => [
         'request' => [
             'csrfParam' => '_csrf-frontend',
