@@ -84,7 +84,7 @@ class StatisticController extends \yii\web\Controller
         $userId = Yii::$app->user->id;
         $data = MoneyTransactionsCategory::getCategoriesByUserId($userId);
         $data = ArrayHelper::map($data, 'id', 'title');
-        $data[0] = 'Все категории';
+        $data[StatisticForm::$ALL_CATEGORIES_VALUE] = StatisticForm::$ALL_CATEGORIES_TITLE;
         return $data;
     }
 
@@ -95,7 +95,7 @@ class StatisticController extends \yii\web\Controller
     {
         $data = Company::getCompaniesByUserId(Yii::$app->user->id);
         $data = ArrayHelper::map($data, 'id', 'title');
-        $data[0] = 'Все компании';
+        $data[StatisticForm::$ALL_COMPANIES_VALUE] = StatisticForm::$ALL_COMPANIES_TITLE;
         return $data;
     }
 }

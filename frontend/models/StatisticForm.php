@@ -12,6 +12,22 @@ use yii\helpers\ArrayHelper;
 class StatisticForm extends Model
 {
     /**
+     * @var int
+     */
+    public static $ALL_COMPANIES_VALUE = 0;
+    /**
+     * @var string
+     */
+    public static $ALL_COMPANIES_TITLE = 'Все компании';
+    /**
+     * @var int
+     */
+    public static $ALL_CATEGORIES_VALUE = 0;
+    /**
+     * @var string
+     */
+    public static $ALL_CATEGORIES_TITLE = 'Все категории';
+    /**
      * @var
      */
     public $date_from;
@@ -78,7 +94,7 @@ class StatisticForm extends Model
         $data = MoneyTransactionsCategory::getCategoriesByUserId(Yii::$app->user->id);
         $data = ArrayHelper::getColumn($data, 'id');
 
-        if (intval($this->$attribute) !== 0 && !in_array($this->$attribute, $data)) {
+        if (intval($this->$attribute) !== self::$ALL_CATEGORIES_VALUE && !in_array($this->$attribute, $data)) {
             $this->addError($attribute, 'Некорректное значение');
         }
     }
@@ -90,7 +106,7 @@ class StatisticForm extends Model
     {
         $data = Company::getCompaniesByUserId(Yii::$app->user->id);
         $data = ArrayHelper::getColumn($data, 'id');
-        if (intval($this->$attribute) !== 0 && !in_array($this->$attribute, $data)) {
+        if (intval($this->$attribute) !== self::$ALL_COMPANIES_VALUE && !in_array($this->$attribute, $data)) {
             $this->addError($attribute, 'Некорректное значение');
         }
     }
