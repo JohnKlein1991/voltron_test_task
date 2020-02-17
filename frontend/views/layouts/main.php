@@ -44,6 +44,7 @@ AppAsset::register($this);
     } else {
         $menuItems[] = ['label' => 'Компании и категории', 'url' => ['/category-and-company']];
         $menuItems[] = ['label' => 'Доходы/расходы', 'url' => ['/money-transaction']];
+        $menuItems[] = ['label' => 'Отчеты', 'url' => ['/statistic']];
         $menuItems[] = '<li>'
             . Html::beginForm(['/site/logout'], 'post')
             . Html::submitButton(
