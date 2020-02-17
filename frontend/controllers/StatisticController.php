@@ -100,7 +100,8 @@ class StatisticController extends \yii\web\Controller
      */
     private function getDataForStatisticTable($requestData = [])
     {
-        return $this->service->getDataForStatisticTable($requestData);
+        $userId = Yii::$app->user->id;
+        return $this->service->getDataForStatisticTable($requestData, $userId);
     }
 
     /**

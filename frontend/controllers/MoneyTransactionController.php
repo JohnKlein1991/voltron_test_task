@@ -69,6 +69,7 @@ class MoneyTransactionController extends Controller
         $dataProvider = new ActiveDataProvider([
             'query' => MoneyTransaction::find()
                 ->with('category')
+                ->where("user_id = " . Yii::$app->user->id)
                 ->orderBy([
                     'date' => SORT_DESC
                 ]),
@@ -83,19 +84,6 @@ class MoneyTransactionController extends Controller
             'dataForSelectTypes' => $dataForSelectTypes,
             'dataForSelectCategories' => $dataForSelectCategories,
             'dataForSelectCompanies' => $dataForSelectCompanies
-        ]);
-    }
-
-    /**
-     * Displays a single MoneyTransaction model.
-     * @param integer $id
-     * @return mixed
-     * @throws NotFoundHttpException if the model cannot be found
-     */
-    public function actionView($id)
-    {
-        return $this->render('view', [
-            'model' => $this->findModel($id),
         ]);
     }
 

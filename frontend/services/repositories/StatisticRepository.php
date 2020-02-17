@@ -26,7 +26,9 @@ class StatisticRepository
         $this->connection = Yii::$app->getDb();
     }
 
+
     /**
+     * @param $userId
      * @param $dateFrom
      * @param $dateTo
      * @param $companyId
@@ -35,13 +37,15 @@ class StatisticRepository
      * @return array
      * @throws \yii\db\Exception
      */
-    public function getDataForStatistic($dateFrom, $dateTo, $companyId, $categoryId, $grouping)
+    public function getDataForStatistic($userId, $dateFrom, $dateTo, $companyId, $categoryId, $grouping)
     {
-        $rawSqlQuery = $this->getRawSqlQuery($dateFrom, $dateTo, $companyId, $categoryId, $grouping);
+        $rawSqlQuery = $this->getRawSqlQuery($userId, $dateFrom, $dateTo, $companyId, $categoryId, $grouping);
         return $this->connection->createCommand($rawSqlQuery)->queryAll();
     }
 
+
     /**
+     * @param $userId
      * @param $dateFrom
      * @param $dateTo
      * @param $companyId
@@ -49,8 +53,9 @@ class StatisticRepository
      * @param $grouping
      * @return string
      */
-    private function getRawSqlQuery($dateFrom, $dateTo, $companyId, $categoryId, $grouping)
+    private function getRawSqlQuery($userId, $dateFrom, $dateTo, $companyId, $categoryId, $grouping)
     {
+        $userWhere = "and mt.user_id = $userId";
         $companySelect = ($companyId == 0) ? "c.title as company," : "";
         $categorySelect = ($categoryId == 0) ? "mtc.title as category," : "";
         $companyWhere = $companyId ? "and c.id = ${companyId}" : "";
@@ -70,7 +75,7 @@ class StatisticRepository
             join companies c on mt.company_id = c.id
             join money_transactions_categories mtc on mt.category_id = mtc.id
             where mt.date between '{$dateFrom}' and '{$dateTo}'
-            {$companyWhere} {$categoryWhere}
+            {$userWhere} {$companyWhere} {$categoryWhere}
             group by {$dateGroupBy} {$companyGroupBy} {$categoryGroupBy} mt.type;
         ";
     }

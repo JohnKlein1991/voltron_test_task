@@ -13,7 +13,7 @@ let currentDate = new Date();
 let currentDateString = currentDate.getFullYear() + '-' + ('0' + (currentDate.getMonth() + 1)).slice(-2) + '-' + ('0' + currentDate.getDate()).slice(-2);
 let datePickerFrom = $('#datepickerFrom');
 let datePickerTo = $('#datepickerTo');
-datePickerFrom.val('2019-06-02');
+datePickerFrom.val(currentDateString);
 datePickerTo.val(currentDateString);
 
 //таблица

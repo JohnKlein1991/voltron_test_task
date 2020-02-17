@@ -25,12 +25,14 @@ class StatisticService
         $this->repository = $repository;
     }
 
+
     /**
      * @param array $data
+     * @param $userId
      * @return mixed
      * @throws \yii\db\Exception
      */
-    public function getDataForStatisticTable($data = [])
+    public function getDataForStatisticTable($data = [], $userId)
     {
         // значения по умолчанию, при переходе на страницу
         $dateFrom = $data['date_from'] ?? date('Y-m-d');
@@ -39,7 +41,7 @@ class StatisticService
         $categoryId = $data['category_id'] ?? 0;
         $companyId = $data['company_id'] ?? 0;
 
-        $rawData = $this->repository->getDataForStatistic($dateFrom, $dateTo, $companyId, $categoryId, $grouping);
+        $rawData = $this->repository->getDataForStatistic($userId, $dateFrom, $dateTo, $companyId, $categoryId, $grouping);
         return $this->prepareRawDataForStatistic($rawData);
     }
 
